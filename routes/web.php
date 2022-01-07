@@ -39,9 +39,18 @@ Route::prefix('admin')->middleware(['auth'])->group(function(){
             'users'         => App\Http\Controllers\Admin\UserController::class,
             'roles'         => App\Http\Controllers\Admin\RoleController::class,
             'permissions'   => App\Http\Controllers\Admin\PermissionController::class,
-            'cms-pages'     => App\Http\Controllers\Admin\CmsPageController::class,
-            
+            'cms-pages'    => App\Http\Controllers\Admin\CmsPageController::class,
+            'cms-pages/{id}/gallery'=> App\Http\Controllers\Admin\CmsPageGalleryController::class,
         ]);
+         Route::get('cms-pages/{id}/gallery/create',[App\Http\Controllers\Admin\CmsPageGalleryController::class,'create'] )->name('cms-pages-gallery.create');
+        Route::POST('cms-pages/{id}/gallery/create',[App\Http\Controllers\Admin\CmsPageGalleryController::class,'store'] )->name('cms-page-gallery.store');
+        Route::get('cms-pages/{id}/gallery/{gallery_id}/update',[App\Http\Controllers\Admin\CmsPageGalleryController::class,'edit'] )->name('cms-pages-gallery.edit');
+
+        Route::get('cms-pages/{id}/gallery',[App\Http\Controllers\Admin\CmsPageGalleryController::class,'index'] )->name('cms-pages-gallery.index');
+         Route::get('cms-pages/{id}/gallery/{gallery_id}/show',[App\Http\Controllers\Admin\CmsPageGalleryController::class,'show'] )->name('cms-pages-gallery.show');
+
+
+         
     
 });
 Route::middleware(['auth'])->group(function(){

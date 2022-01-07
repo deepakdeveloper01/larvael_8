@@ -33,7 +33,7 @@
                 <a class="btn btn-primary" href="{{ route('permissions.edit',$role->id) }}">Edit</a>
             @endcan
             @can('permission-delete')
-                {!! Form::open(['method' => 'DELETE','route' => ['permission.destroy', $role->id],'style'=>'display:inline']) !!}
+                {!! Form::open(['method' => 'DELETE','route' => ['permissions.destroy', $role->id],'style'=>'display:inline']) !!}
                     {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                 {!! Form::close() !!}
             @endcan

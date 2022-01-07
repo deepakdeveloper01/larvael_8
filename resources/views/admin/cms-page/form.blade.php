@@ -40,22 +40,19 @@
   </div>
 </div>
 <div class="form-group row">
-	<label for="image_path" class="col-sm-2 col-form-label">Image /Logo</label>
+	<label for="image_path" class="col-sm-2 col-form-label">Image / Logo</label>
 	<div class="col-sm-10">
-		
 		<div class="input-group">
-          <span class="input-group-btn">
-            <a id="image_path" data-input="thumbnail" data-preview="holder" class="btn btn-primary text-white">
-              <i class="fa fa-picture-o"></i> Choose
-            </a>
-          </span>
-          {!! Form::text('image_path', null, ['class' => 'form-control', 'id'=>'thumbnail','placeholder'=>'select Image']) !!}
+      <span class="input-group-btn">
+        <a id="image_path" data-input="thumbnail" data-preview="holder" class="btn btn-primary text-white">
+          <i class="fa fa-picture-o"></i> Choose
+        </a>
+      </span>
+      {!! Form::text('image_path', null, ['class' => 'form-control', 'id'=>'thumbnail','placeholder'=>'select Image']) !!}
       {!! $errors->first('image_path', '<span class="text-danger">:message</span>') !!}
-        
-        </div>
+    </div>
 	</div>
 </div>
-
 <div class="form-group row">
 	<label for="short_description" class="col-sm-2 col-form-label">Short Description</label>
 	<div class="col-sm-10">

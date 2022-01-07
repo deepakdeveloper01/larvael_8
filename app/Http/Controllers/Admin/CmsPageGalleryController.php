@@ -4,55 +4,59 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use App\Models\CmsPage;
 use App\Models\CmsPageGallery;
-
-use DB;
 use Validator;
-use App\Models\CmsPageContentType;
-use App\Models\CmsPageAdditionalContent;
-use App\Http\Requests\CmsPage\CreateRequest;
-use App\Http\Requests\CmsPage\UpdateRequest;
-use App\Http\Requests\CmsPage\CustomRequest;
-use File;
-use View;
+use App\Http\Requests\CmsPageGallery\CreateRequest;
+use App\Http\Requests\CmsPageGallery\UpdateRequest;
+use App\Http\Requests\CmsPageGallery\CustomRequest;
 
-class CmsPageController extends Controller
+class CmsPageGalleryController extends Controller
 {
     public function index(Request $request){
-        $CmsPages =  CmsPage::orderBy('id','DESC')->get();
-        return view('admin.cms-page.index',compact('CmsPages'))->with('i', ($request->input('page', 1) - 1) * 10);
-       // dd($cmsPage);
+        $CmsPages =  CmsPageGallery::orderBy('id','DESC')->paginate(5);
+        if(!empty($request->id)){
+            $CmsPages =$CmsPages = CmsPageGallery::where('cms_page_id',$request->id)->orderBy('id','DESC')->paginate(5);
+        }    
+        return view('admin.cms-page-gallery.index',compact('CmsPages'))
+                ->with('i', ($request->input('page', 1) - 1) * 5);
+
     }
 
     public function create(CustomRequest $request, CmsPage $CmsPage)
-    {
-        $CmsPageContentType = CmsPageContentType::all()->pluck('name','id');
-        return view('admin.cms-page.create',compact('CmsPageContentType'));
+    {   
+        if($request->id && ($Page =CmsPage::where('id', '=', $request->id)->exists())){
+            $CmsPage =$request->id;
+            return view('admin.cms-page-gallery.create', compact('CmsPage'));   
+        }       
+        return redirect()->back()->with('danger','somthing went wrong');   
+       
     }
 
     public function store(CreateRequest $request)
     {  
-//        dd($request->all());
-        $CmsPage = CmsPage::create($request->all());
-        if (!empty($request->bodies) && \is_array($CmsPage)) {
-            foreach ($request->bodies as $key => $body) {
-                CmsPageAdditionalContent::create([  2,
-                    $body,
-                    $CmsPage->id,
-                    $key
-                ]);
-            }
+        
+        $CmsPageGallery = CmsPageGallery::create($request->all());
+        $image = $request->file('image_path');
+        if(!empty($image)){
+            $image_name = $request->cms_page_id.'-image-'.strtotime("now").'.'.$image->getClientOriginalExtension();
+            $image->move(config('my_config.cms_page_gallery'), $image_name);
+            $CmsPageGallery->image_path = $image_name;
+            $CmsPageGallery->save();  
         }
        
-        return redirect()->route('cms-pages.index')->with('success','cms-page created successfully');
+        return redirect()->route('cms-pages-gallery.index',[$request->cms_page_id])->with('success','cms-page created successfully');
     }
 
-    public function show($id){
-        $CmsPage = CmsPage::with('cms_page_gallery')->findorfail($id);
-       
-        return view('admin.cms-page.show')->with(compact('CmsPage'));
+    public function show(Request $request,$id){
+       // dd($request->gallery_id);
+        if($request->id && ($Page =CmsPageGallery::where('id', $request->gallery_id)->exists())){
+            $CmsPageGallery = CmsPageGallery::findorfail($request->gallery_id);
+           $CmsPage = $request->id;
+            return view('admin.cms-page-gallery.show', compact('CmsPageGallery','CmsPage'));   
+        }
+
+        return redirect()->back()->with('danger','somthing went wrong');   
     }
 
     public function edit(CustomRequest $request, CmsPage $CmsPage){

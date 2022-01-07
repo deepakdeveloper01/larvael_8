@@ -8,8 +8,8 @@
 <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1><i class="fa fa-file"></i> Cms Page Management 
-            <a class="btn btn-success" href="{{ route('cms-pages.create') }}" style="border-radius: 50%;"><i class="fa fa-plus"></i> </a>
+        <h1><i class="fa fa-list"></i> Cms Page Gallery 
+            <a class="btn btn-success " href="{{ route('cms-pages-gallery.create',[$CmsPage]) }}"><i class="fa fa-plus border_radius"></i> </a>
          </h1>
       </div>
       <div class="col-sm-6">
@@ -30,24 +30,21 @@
 					<h2 class="card-title">
 						<i class="fas fa-plus border_radius"></i> Add New
 					</h2>
-					&nbsp;
-					<a class="fas fa-reply-all btn-warning btn-sm" href="{!!route('cms-pages.index')!!}">	Back</a>
 				</div>
 				<div class="card-body">
-				    {!! Form::model($CmsPage, ['method' => 'PATCH','files'=>true, 'route' => ['cms-pages.update', $CmsPage->id,'id'=>"cms-page-form",'class'=>'cms-page-form']]) !!}
-				  	@include('admin.cms-page.form')
+				  {!! Form::open(['spellcheck'=>'true','files'=>true, 'route' => ['cms-page-gallery.store',[$CmsPage]] ,'id'=>"cms-pages-gallery-form"]) !!}
+				  	@include('admin.cms-page-gallery.form')
 			
-	               <div class="card-footer">
-	                <button type="submit" id="submitCmsPageForm" class="btn btn-primary"><i class="fas fa-edit"> </i>  Update </button>
-	                 <button type="reset" class="btn btn-danger"><i class="fas fa-times"> </i> Cancel</button>
-	              </div>
-	            </div>
+               <div class="card-footer">
+                <button type="submit" id="submitCmsPageGalleryForm" class="btn btn-primary"><i class="fas fa-plus border_radius"> </i> Add </button>
+                 <button type="reset" class="btn btn-danger"><i class="fas fa-times"> </i> Cancel</button>
+              </div>
+            
            {!! Form::close() !!}	
         </div>
       </div>
     </div>
-</div>
-
+  </div>  
 
 
 {{--  here will be shown the listing of all data--}}

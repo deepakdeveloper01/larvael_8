@@ -28,14 +28,15 @@
 			<div class="card card-info">
 				<div class="card-header">
 					<h2 class="card-title">
-						<i class="fas fa-plus border_radius"></i> Add New
+						<i class="fas fa-plus"></i> Add New
 					</h2>
 					&nbsp;
 					<a class="fas fa-reply-all btn-warning btn-sm" href="{!!route('cms-pages.index')!!}">	Back</a>
 				</div>
 				<div class="card-body">
-				    {!! Form::model($CmsPage, ['method' => 'PATCH','files'=>true, 'route' => ['cms-pages.update', $CmsPage->id,'id'=>"cms-page-form",'class'=>'cms-page-form']]) !!}
-				  	@include('admin.cms-page.form')
+				    {!! Form::open($CmsPageGallery, ['method' => 'PATCH','files'=>true, 'route' => ['cms-page-gallery.update', $CmsPage->id,'id'=>"cms-pages-gallery-form",'class'=>'cms-pages-gallery-form']]) !!}
+				  	
+				  	@include('admin.cms-page-gallery.form')
 			
 	               <div class="card-footer">
 	                <button type="submit" id="submitCmsPageForm" class="btn btn-primary"><i class="fas fa-edit"> </i>  Update </button>

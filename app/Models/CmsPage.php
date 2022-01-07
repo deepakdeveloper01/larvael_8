@@ -36,8 +36,14 @@ class CmsPage extends Model
 
     public function CmsPageAdditionalContents()
     {
-        return $this->hasMany('App\Models\CmsPageAdditionalContent');
+        return $this->hasMany('App\Models\CmsPageAdditionalContent')->orderBy('order','ASC');
     }
+
+    public function cms_page_gallery(){
+        
+        return $this->hasMany('App\Models\CmsPageGallery');
+    }  
+
     // Boot the model.
     protected static function boot()
     {
@@ -97,12 +103,11 @@ class CmsPage extends Model
 
     private function saveText($CmsPage,$CmsPageDATA)
     {
-        echo ('text fucntion called');
         //dd($CmsPage);
         if (!empty($CmsPage) && \is_array($CmsPage)) {
             foreach ($CmsPage as $key => $body) {
                 CmsPageAdditionalContent::createContent(
-                    2,
+                    1,
                     $body,
                     $CmsPageDATA->id,
                     $key
@@ -110,14 +115,6 @@ class CmsPage extends Model
             }
         }
     }
-
-    
-
-    /** 
-     * Write code on Method
-     *
-     * @return response()
-    */
 
     private function createSlug($title){
         $title = 'Laravel 8 Image Upload';
@@ -141,5 +138,6 @@ class CmsPage extends Model
             //return "{$slug}-2";
         }
         return $slug;
-    }                   
+    } 
+                    
 }
